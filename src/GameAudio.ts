@@ -6,6 +6,10 @@ import track4 from "../music/(FREE)_SKI_MASK_THE_SLUMP_GOD_TYPE_BEAT_GANG_(prod.
 import track5 from "../music/(FREE)_Smokepurpp_x_Comethazine_x_Lil_Pump_Type_Beat_Get_Em_Homer_Two_Prod.By_RolandJoeC.mp3";
 import fail_boredom from "../music/FAIL_SOUND_EFFECT.mp3";
 import fail_anguish from "../music/The_Wilhelm_scream_sound_effect.mp3";
+import notificationMP3 from "../music/just-saying.mp3";
+import notificationOGG from "../music/just-saying.ogg";
+import notificationM4R from "../music/just-saying.m4r";
+
 import { Game } from "./Game";
 import { Subscription } from "rxjs";
 import { GameManager } from "./GameManager";
@@ -25,6 +29,11 @@ export class GameAudio {
     src: fail_boredom
   });
 
+  private notification = new Howl({
+    preload: true,
+    src: [notificationM4R, notificationMP3, notificationOGG]
+  });
+
   private currentPlaylist: Howl;
 
   private onTrackEnd = (index: number) => () => {
@@ -40,9 +49,6 @@ export class GameAudio {
     }
   };
 
-  anguishSubscription: Subscription;
-  boredomSubscription: Subscription;
-
   constructor(manager: GameManager) {
     this.playlist = shuffle([track1, track2, track3, track4, track5]).map(
       (track, index) =>
@@ -55,6 +61,9 @@ export class GameAudio {
     manager.onStart.subscribe(this.subscribe);
   }
 
+  anguishSubscription: Subscription;
+  boredomSubscription: Subscription;
+  screenSubscription: Subscription;
   subscribe = (game: Game) => {
     this.play();
     if (this.anguishSubscription) {
@@ -65,6 +74,11 @@ export class GameAudio {
     }
     this.anguishSubscription = game.onLoseByAnguish(this.loseByAnguish);
     this.boredomSubscription = game.onLoseByBoredom(this.loseByBoredom);
+    this.screenSubscription = game.onScreenChange.subscribe(screen => {
+      if (screen.type === "whatsapp") {
+        this.notification.play();
+      }
+    });
   };
 
   private loseByAnguish = () => {

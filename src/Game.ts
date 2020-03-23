@@ -11,6 +11,7 @@ import { scan, takeWhile, timeout } from "rxjs/operators";
 import { Tweets, Tweet } from "./Twitter";
 import { GameScreen } from "./MainScreen";
 import { GameAudio } from "./GameAudio";
+import { getWhatsAppMessage } from "./Whatsapp";
 const add = (acc, value) => acc + value;
 
 export class Game {
@@ -66,14 +67,28 @@ export class Game {
   onScreenChange = this.screenSubject.asObservable();
 
   currentTimeout: number;
-
+  goBackToMain = () => {
+    if (Math.random() < 0.05) {
+      return () => {
+        this.currentTimeout = setTimeout(
+          () => this.screenSubject.next({ type: "menu" }),
+          4000
+        );
+        const message = getWhatsAppMessage();
+        this.screenSubject.next({
+          type: "whatsapp",
+          message
+        });
+        this.boredom.next(message.boredom);
+      };
+    } else {
+      return () => this.screenSubject.next({ type: "menu" });
+    }
+  };
   getTweet = () => {
     const tweet = this.tweets.getRandomTweet();
     this.screenSubject.next({ type: "tweet", tweet });
-    this.currentTimeout = setTimeout(
-      () => this.screenSubject.next({ type: "menu" }),
-      4000
-    );
+    this.currentTimeout = setTimeout(this.goBackToMain(), 4000);
 
     this.boredom.next(-10);
     this.anguish.next(tweet.anguish);
@@ -81,10 +96,7 @@ export class Game {
 
   doSport = () => {
     this.screenSubject.next({ type: "sport" });
-    this.currentTimeout = setTimeout(
-      () => this.screenSubject.next({ type: "menu" }),
-      4000
-    );
+    this.currentTimeout = setTimeout(this.goBackToMain(), 4000);
     this.boredom.next(15);
     this.anguish.next(-20);
   };

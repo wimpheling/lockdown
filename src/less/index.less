@@ -1,7 +1,48 @@
+body {
+  background: black;
+  h1 {
+    color: white;
+    width: 100%;
+    text-align: center;
+  }
+}
 .container {
   display: flex;
   flex-flow: column;
-  aside {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.nes-container {
+  background: white;
+}
+.menu {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 100%;
+  button {
+    padding: 1rem;
+    margin: 1rem 0;
+  }
+}
+.nes-badge {
+  width: 15rem;
+}
+.tweet {
+  display: flex;
+  flex-flow: row;
+  width: 100%;
+  img {
+    height: 10vh;
+  }
+  .content {
+    .name {
+      font-weight: bold;
+    }
+    display: flex;
+    flex-flow: column;
+    text-align: left;
   }
 }
 .main-container {
@@ -14,11 +55,15 @@
     aside {
       width: 30%;
     }
+    article {
+      width: 70%;
+    }
   }
 }
 .bigimage {
   max-width: 100%;
 }
+
 .blinking {
   animation: blinkingText 0.2s infinite;
 }
