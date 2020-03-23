@@ -14,12 +14,31 @@ import { GameAudio } from "./GameAudio";
 const add = (acc, value) => acc + value;
 
 export class Game {
-  tweets = new Tweets();
-  audio: GameAudio;
-  //emit value in sequence every 1 second
-  source: Observable<number> = interval(400);
+  constructor() {
+    this.boredomValue.subscribe({
+      complete: () => {
+        this.screenSubject.next({ type: "lose", from: "boredom" });
+        this.end();
+      }
+    });
+    this.anguishValue.subscribe({
+      complete: () => {
+        this.screenSubject.next({ type: "lose", from: "anguish" });
+        this.end();
+      }
+    });
+  }
 
-  subscribe: Subscription;
+  uid = Math.random().toString();
+  tweets = new Tweets();
+  //emit value in sequence every 1 second
+  source: Observable<number> = interval(1000);
+
+  subscribe: Subscription = this.source.subscribe(val => {
+    this.boredom.next(1);
+    this.anguish.next(0.5);
+    this.addHoursElapsed.next(1);
+  });
 
   private boredom: BehaviorSubject<number> = new BehaviorSubject<number>(50);
   //   boredom$ = this.boredom.asObservable();
@@ -43,72 +62,37 @@ export class Game {
   onLoseByBoredom = (callback: () => void) =>
     this.boredomValue.subscribe({ complete: callback });
 
-  constructor() {
-    this.boredomValue.subscribe({
-      complete: () => {
-        this.screenSubject.next({ type: "lose", from: "boredom" });
-        this.end();
-      }
-    });
-    this.anguishValue.subscribe({
-      complete: () => {
-        this.screenSubject.next({ type: "lose", from: "anguish" });
-        this.end();
-      }
-    });
-  }
-
   private screenSubject = new Subject<GameScreen>();
   onScreenChange = this.screenSubject.asObservable();
 
-  alreadyDisplayedTweets = [];
   currentTimeout: number;
 
   getTweet = () => {
     const tweet = this.tweets.getRandomTweet();
-    this.boredom.next(-10);
-    this.anguish.next(tweet.anguish);
     this.screenSubject.next({ type: "tweet", tweet });
     this.currentTimeout = setTimeout(
       () => this.screenSubject.next({ type: "menu" }),
-      3000
+      4000
     );
+
+    this.boredom.next(-10);
+    this.anguish.next(tweet.anguish);
   };
 
   doSport = () => {
     this.screenSubject.next({ type: "sport" });
-    this.boredom.next(15);
-    this.anguish.next(-20);
     this.currentTimeout = setTimeout(
       () => this.screenSubject.next({ type: "menu" }),
-      3000
+      4000
     );
+    this.boredom.next(15);
+    this.anguish.next(-20);
   };
 
-  started = false;
-  private startSubject = new Subject<void>();
-  onStart = this.startSubject.asObservable();
-  start = () => {
-    if (!this.audio) {
-      this.audio = new GameAudio(this);
-    }
-    if (!this.started) {
-      this.started = true;
-      this.startSubject.next();
-      this.subscribe = this.source.subscribe(val => {
-        this.boredom.next(4);
-        this.anguish.next(0.5);
-        this.addHoursElapsed.next(1);
-      });
-      this.audio.play();
-    }
-  };
-
-  private end() {
-    this.started = false;
+  private end = () => {
     if (this.currentTimeout) {
       clearTimeout(this.currentTimeout);
     }
     this.subscribe.unsubscribe();
-  }
+  };
 }

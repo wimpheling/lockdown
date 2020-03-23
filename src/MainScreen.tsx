@@ -5,6 +5,7 @@ import { Game } from "./Game";
 import { Tweet } from "./Twitter";
 import flex from "../images/flex.gif";
 import youlose from "../images/to-lose-a-game-png-s2e16-you-lose-png-1920.png";
+import { GameManager } from "./GameManager";
 
 export type GameScreen =
   | {
@@ -15,14 +16,22 @@ export type GameScreen =
   | { type: "menu" }
   | { type: "sport" };
 
-export function MainScreen({ game }: { game: Game }) {
+export function MainScreen({
+  game,
+  manager
+}: {
+  game: Game;
+  manager: GameManager;
+}) {
   const [boredom, setBoredom] = useState(1);
   const [anguish, setAnguish] = useState(0);
+  const [hours, setHours] = useState(0);
   const [screen, setScreen] = useState<GameScreen>({ type: "menu" });
 
   useEffect(() => {
     game.boredomValue.subscribe(setBoredom);
     game.anguishValue.subscribe(setAnguish);
+    game.hoursElapsed.subscribe(setHours);
     game.onScreenChange.subscribe(setScreen);
     game.onScreenChange.subscribe(console.log);
   }, []);
@@ -47,6 +56,10 @@ export function MainScreen({ game }: { game: Game }) {
               value={anguish}
               max="100"
             ></progress>
+          </section>
+          <section class="nes-container with-title">
+            <h3>Temps écoulé</h3>
+            {hours} Heures
           </section>
         </aside>
         <article>
@@ -80,16 +93,24 @@ export function MainScreen({ game }: { game: Game }) {
               {screen.from === "boredom" && (
                 <Fragment>
                   <img class="bigimage" src={youlose} />
-                  <p class="blinking">VOUS ETES MORT D'ENNUI</p>
+                  <p class="blinking-white">VOUS ETES MORT D'ENNUI</p>
+                  <p>
+                    Vous sortez de chez vous en hurlant en slip. 2700 euros
+                    d'amende
+                  </p>
                 </Fragment>
               )}
               {screen.from === "anguish" && (
                 <Fragment>
                   <img class="bigimage" src={youlose} />
-                  <p class="blinking">VOUS ETES MORT D'ANGOISSE</p>
+                  <p class="blinking-white">VOUS ETES MORT D'ANGOISSE</p>
+                  <p>
+                    Vous vous grattez jusqu'à saigner et contracter le virus
+                  </p>
                 </Fragment>
               )}
-              <button class="nes-btn is-primary" onClick={game.start}>
+              <h2>Score : {hours} heures en confinement</h2>
+              <button class="nes-btn is-primary" onClick={manager.newGame}>
                 CLICK HERE TO RESTART THE GAME
               </button>
             </div>

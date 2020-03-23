@@ -3,21 +3,22 @@ import { useState, useEffect } from "preact/hooks";
 import { Game } from "./Game";
 import title from "../images/83806c2d045fd0d7b0be73c6357708b9.jpg";
 import { MainScreen } from "./MainScreen";
+import { GameManager } from "./GameManager";
 
-export function GameView({ game }: { game: Game }) {
-  const [started, setStarted] = useState(false);
+export function GameView({ manager }: { manager: GameManager }) {
+  const [game, setGame] = useState<Game>(null);
 
   useEffect(() => {
-    game.onStart.subscribe(() => setStarted(true));
+    manager.onStart.subscribe(setGame);
   }, []);
 
   return (
     <Fragment>
-      {started && <MainScreen game={game} />}
-      {!started && (
+      {game && <MainScreen game={game} key={game.uid} manager={manager} />}
+      {!game && (
         <div class="main-container">
           <img src={title} class="bigimage" />
-          <button class="nes-btn is-primary" onClick={game.start}>
+          <button class="nes-btn is-primary" onClick={manager.init}>
             CLICK HERE TO START THE GAME
           </button>
         </div>
