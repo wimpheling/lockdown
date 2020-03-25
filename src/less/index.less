@@ -47,6 +47,12 @@ body {
 }
 .main-container {
   text-align: center;
+  flex-flow: column;
+}
+.wash-container {
+  position: relative;
+  width: 100vw;
+  height: 50vh;
 }
 // Large devices (desktops, 992px and up)
 @media (min-width: 992px) {
@@ -58,6 +64,12 @@ body {
     article {
       width: 70%;
     }
+  }
+
+  .wash-container {
+    position: relative;
+    width: 100%;
+    height: auto;
   }
 }
 .bigimage {

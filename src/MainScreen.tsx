@@ -8,6 +8,7 @@ import youlose from "../images/to-lose-a-game-png-s2e16-you-lose-png-1920.png";
 import { GameManager } from "./GameManager";
 import { WhatsAppMessage } from "./Whatsapp";
 import { Badges } from "./Badges";
+import { GameCanvas } from "./GameCanvas";
 
 export type GameScreen =
   | {
@@ -16,6 +17,7 @@ export type GameScreen =
     }
   | { type: "lose"; from: "boredom" | "anguish" }
   | { type: "menu" }
+  | { type: "washHands"; spots: number; level: number }
   | { type: "whatsapp"; message: WhatsAppMessage }
   | { type: "sport" };
 
@@ -80,6 +82,22 @@ export function MainScreen({
               <button class="nes-btn is-primary" onClick={game.doSport}>
                 Faire du sport
               </button>
+              <button class="nes-btn is-primary" onClick={game.washHands}>
+                Se laver les mains
+              </button>
+            </div>
+          )}
+          {screen.type === "washHands" && (
+            <div class="nes-container with-title is-centered">
+              <h3>Se laver les mains</h3>
+              <p>Passe la souris sur les germes pour les savonner !</p>
+              <GameCanvas
+                maxTime={20}
+                level={screen.level}
+                numberOfSpots={screen.spots}
+                onLose={game.losenWashHands}
+                onWin={game.winWashHands}
+              />
             </div>
           )}
           {screen.type === "tweet" && (

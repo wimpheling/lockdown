@@ -1,6 +1,7 @@
 import macron from "../images/macron.jpg";
 import newspaper from "../images/newspaper.jpg";
 import ufo from "../images/ufo.jpg";
+import doctor from "../images/docteur.jpg";
 import { between } from "./helpers/random";
 
 export interface Tweet {
@@ -41,6 +42,18 @@ const tweets: Tweet[] = [
     anguish: 5
   },
   {
+    image: newspaper,
+    text: "L'abonnement netflix augmente à 100 euros par mois",
+    name: "Le girafo",
+    anguish: 15
+  },
+  {
+    image: newspaper,
+    text: "Bolsonaro vainc le coronavirus à mains nues",
+    name: "Le girafo",
+    anguish: 7
+  },
+  {
     image: ufo,
     text: "Le virus serait une création des atlantes",
     name: "Conspinews",
@@ -57,6 +70,36 @@ const tweets: Tweet[] = [
     text: "Le virus se retire suite à des tweets raciste et homophobes",
     name: "Conspinews",
     anguish: -10
+  },
+  {
+    image: ufo,
+    text: "le coronavirus attaque le cerveau des porteurs sains",
+    name: "Conspinews",
+    anguish: 10
+  },
+  {
+    image: ufo,
+    text: "la masturbation provoque le coronavirus",
+    name: "Conspinews",
+    anguish: 6
+  },
+  {
+    image: doctor,
+    text: "Le gel hydroalcoolique homéopathique: remède miracle ?",
+    name: "Dr. Miaoult",
+    anguish: 12
+  },
+  {
+    image: doctor,
+    text: "EXCLU Médicale : le niqab protège du virus",
+    name: "Dr. Miaoult",
+    anguish: 5
+  },
+  {
+    image: doctor,
+    text: "EXCLU : Aucun remède possible pour le virus",
+    name: "Dr. Miaoult",
+    anguish: 20
   }
 ];
 

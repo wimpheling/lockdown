@@ -100,6 +100,26 @@ export class Game {
     this.boredom.next(15);
     this.anguish.next(-20);
   };
+  private washHandsLevel = 1;
+  washHands = () => {
+    this.screenSubject.next({
+      type: "washHands",
+      spots: 20 + (this.washHandsLevel - 1) * 10,
+      level: this.washHandsLevel
+    });
+  };
+
+  winWashHands = () => {
+    this.washHandsLevel++;
+    this.goBackToMain()();
+    this.boredom.next(-10);
+    this.anguish.next(-20);
+  };
+  losenWashHands = () => {
+    this.goBackToMain()();
+    this.boredom.next(-10);
+    this.anguish.next(+20);
+  };
 
   private end = () => {
     if (this.currentTimeout) {

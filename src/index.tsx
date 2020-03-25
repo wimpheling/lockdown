@@ -2,7 +2,6 @@ import { h, render } from "preact";
 import { MainScreen } from "./MainScreen";
 import "nes.css/css/nes.min.css";
 import "./less/index.less";
-import { Game } from "./Game";
 import { GameView } from "./GameView";
 import { GameManager } from "./GameManager";
 
@@ -12,12 +11,14 @@ import title from "../images/83806c2d045fd0d7b0be73c6357708b9.jpg";
 import macron from "../images/macron.jpg";
 import newspaper from "../images/newspaper.jpg";
 import ufo from "../images/ufo.jpg";
+import doctor from "../images/docteur.jpg";
+import hands from "../images/dua-hands.svg";
 
 const manager = new GameManager();
 
 //Preloader
 (async () => {
-  const items = [flex, youlose, macron, title, newspaper, ufo];
+  const items = [flex, youlose, macron, title, newspaper, ufo, doctor, hands];
   await Promise.all(
     items.map(
       image =>

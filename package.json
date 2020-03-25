@@ -20,6 +20,7 @@
   "dependencies": {
     "@types/howler": "^2.1.2",
     "howler": "^2.1.3",
+    "konva": "^4.2.0",
     "nes.css": "^2.3.0",
     "preact": "^10.3.4",
     "refract-preact-rxjs": "^4.2.2",
