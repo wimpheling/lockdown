@@ -23,8 +23,10 @@ export type GameScreen =
 
 export function MainScreen({
   game,
-  manager
+  manager,
+  about
 }: {
+  about: () => void;
   game: Game;
   manager: GameManager;
 }) {
@@ -49,7 +51,12 @@ export function MainScreen({
 
   return (
     <div>
-      <h1>Simulateur de C0NFIN3M3NT UwU</h1>
+      <h1>
+        Simulateur de C0NFIN3M3NT UwU{" "}
+        <a href="#" onClick={about}>
+          i
+        </a>
+      </h1>
       <div class="container">
         <aside>
           <section class="nes-container with-title">
